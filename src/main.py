@@ -5,6 +5,8 @@ from kivy.lang import Builder
 # from FileSharer import FileSharer
 import time
 
+from src.FileSharer import FileSharer
+
 Builder.load_file("frontend.kv")
 
 
@@ -21,14 +23,20 @@ class CameraScreen(Screen):
 
     def capture(self):
         current_time = time.strftime('%Y%m%d-%H%M%S')
-        filepath = '../captured/' + current_time + ".png"
-        self.ids.camera.export_to_png(filepath)
+        self.filepath = '../captured/' + current_time + ".png"
+        self.ids.camera.export_to_png(self.filepath)
         self.manager.current = 'image_screen'
-        self.manager.current_screen.ids.img.source = filepath
+        self.manager.current_screen.ids.img.source = self.filepath
 
 
 class ImageScreen(Screen):
-    pass
+    def create_link(self):
+        file_path = App.get_running_app().root.ids.camera_screen.filepath
+        file_sharer = FileSharer(filepath=file_path)
+        url = file_sharer.share()
+        self.ids.link.text = url
+        # print(url)
+
 
 
 class RootWidget(ScreenManager):
