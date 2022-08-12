@@ -3,7 +3,7 @@ from kivy.core.camera import Camera
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 from kivy.core.clipboard import Clipboard
-
+import webbrowser
 # from FileSharer import FileSharer
 import time
 
@@ -33,6 +33,7 @@ class CameraScreen(Screen):
 
 
 class ImageScreen(Screen):
+    link_does_not_exist_error_message = "Create a Link First!"
     def create_link(self):
         file_path = App.get_running_app().root.ids.camera_screen.filepath
         file_sharer = FileSharer(filepath=file_path)
@@ -44,7 +45,13 @@ class ImageScreen(Screen):
         try:
             Clipboard.copy(self.url)
         except:
-            self.ids.link.text = "Create a Link First!"
+            self.ids.link.text = self.link_does_not_exist_error_message
+
+    def open_link(self):
+        try:
+            webbrowser.open(self.url)
+        except:
+            self.ids.link.text = self.link_does_not_exist_error_message
 
 
 class RootWidget(ScreenManager):
