@@ -16,12 +16,14 @@ class CameraScreen(Screen):
     def start(self):
         """Method which turns camera on when Start camera button is pressed"""
         self.ids.camera.play = True
+        self.ids.camera.opacity = 1
         self.ids.camera_button.text = 'Stop Camera'
         self.ids.camera.texture = self.ids.camera._camera.texture
 
     def stop(self):
         """Method which turns camera off when stop camera button is pressed"""
         self.ids.camera.play = False
+        self.ids.camera.opacity = 0
         self.ids.camera_button.text = 'Start Camera'
         self.ids.camera.texture = None
 
